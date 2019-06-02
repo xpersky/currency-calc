@@ -1,0 +1,295 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CurrencyCalc{% endblock %}
+
+{% block body %}
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto:400,700,900i&display=swap');
+    html {
+        height:100%;
+    }
+    body {
+        background: linear-gradient(to bottom, #1488cc, #2b32b2);
+        font: 18px/1.5 'Roboto', sans-serif;
+    }
+    .title { 
+        transform:translate(0,-25%); 
+        font-size:48px; 
+        font-weight:900; 
+        text-align:center; 
+        color:white;
+        text-shadow:2px 2px 2px rgba(0,0,0,0.5);
+    }
+    .form-container {
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:800px;
+        height:600px;
+    }
+    .form_calc {
+        position:absolute;
+        top:30%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:800px; 
+        height:275px;   
+        border:1px solid rgba(255,255,255,0.5);
+        border-radius:24px;
+        background: linear-gradient(to bottom, #0575e6, #021b79);
+        color:white;
+    }
+    .form_field {
+        box-sizing:border-box;
+        display:flex;
+        flex-direction:column;
+        justify-content: space-evenly;
+        flex-wrap: nowrap;
+        margin-top:10px;
+        margin-bottom:10px;
+        border-bottom: 1px solid rgba(255,255,255,0.5);
+        height:60px;
+    }
+    .form_row {
+        display:flex;
+        flex-direction:row;
+        justify-content: space-evenly;
+        flex-wrap: nowrap;
+    }
+    .form_label {
+        margin:0;
+        position:relative;
+        display:block;
+        height:50px;
+    }
+    .form_label label {
+        display:flex;
+        justify-content:center;
+        align-items:flex-end;
+        width:200px; 
+        height:50px;
+        font-size:36px;
+        font-weight:700;
+        text-shadow:1px 1px 1px rgba(0,0,0,0.5);
+    }
+    .form_label ul {
+        position:absolute;
+        z-index:-1;
+        top:20%;
+        left:-100%;
+        transform:translate(-50%,-50%);
+        text-align:center;
+        color:white;
+        font-weight:700;
+        list-style:none;
+        font-size:12px;
+        white-space:nowrap;
+        text-shadow:1px 1px 1px rgba(0,0,0,0.5);
+        width:200px;
+    }
+    .form_label ul:before{
+        content:'';
+        position:absolute;
+        top:50%;
+        left:55%;
+        transform:translate(-50%,-50%);
+        width:235px;
+        height:35px;
+        background:#e55039;
+        border-radius:8px;
+        /*box-shadow:2px 2px 2px rgba(0,0,0,0.5);*/
+    }
+    .form_label ul:after{
+        content:'';
+        position:absolute;
+        top:50%;
+        left:145%;
+        transform:translate(-50%,-50%);
+        width: 200px;
+        height: 0; 
+        border-top: 30px solid transparent;
+        border-bottom: 30px solid transparent;
+        border-left: 40px solid #e55039;
+        
+    }
+    .form_label ul li {
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+    }
+    .form_row input[type="text"] {
+        box-sizing:border-box;
+        line-height:50px;
+        height:50px;
+        width:500px;
+        font-size:18px;
+        padding-left:10px;
+        border:1px solid rgba(255,255,255,0.5);
+        background:rgba(0,0,0,0.25);
+        color:white;
+        border-radius:12px;
+    }
+    .form_row select{
+        position:relative;
+        box-sizing:border-box;
+        line-height:25px;
+        height:50px;
+        width:500px;
+        font-size:18px;
+        padding-left:10px;
+        border:1px solid rgba(255,255,255,0.5);
+        background:rgba(0,0,0,0.25);
+        color:white;
+        border-radius:12px;
+    }
+    .form_row select option {
+        color:black;
+        background:white;
+    }
+    .select-items {
+        position: absolute;
+        background-color: DodgerBlue;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 99;
+    }
+    .form_field_rsc {
+        display:flex;
+        flex-direction:row;
+        flex-wrap:nowrap;
+        justify-content:center;
+        align-items:center;
+        font-size:14px;
+        margin-top:15px;
+        text-shadow:1px 1px 1px rgba(0,0,0,0.5);
+    }
+    .form_calc input[type="submit"] {
+        position:absolute;
+        bottom:15%;
+        left:50%;
+        transform:translate(-50%,+50%);
+        width:160px;
+        height:50px;
+        border-radius:12px;
+        background:rgba(0,0,0,0.25);
+        border:1px solid rgba(255,255,255,0.25);
+        box-shadow:1px 1px 1px rgba(0,0,0,0.5);
+        color:white;
+        font-size:28px;
+        font-weight:700;
+        cursor:pointer;
+        transition:0.5s ease;
+    }
+    .form_calc input[type="submit"]:hover {
+        background:rgba(255,255,255,0);
+        
+    }
+    .respond {
+        position:absolute;
+        top:77.5%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:800px;
+        height:235px;
+        border-radius:24px;
+        background:#ecf0f1;
+        color:black;
+        border:1px solid rgba(255,255,255,0.5);
+        display:flex;
+        flex-direction:column;
+        justify-content:space-evenly;
+        align-items:center;
+        font-size:20px;
+        font-weight:600;
+        text-shadow:1px 1px 0px rgba(0,0,0,0.5);
+    }
+    .scres {
+        display:flex;
+        flex-direction:column;
+        justify-content:space-evenly;
+        align-items:center;
+        font-size:18px;
+        font-weight:600;
+    }
+    .footer {
+        position:fixed;
+        left:50%;
+        bottom:0;
+        width:100%;
+        height:50px;
+        background:black;
+        transform:translate(-50%,0);
+        display:flex;
+        flex-direction:row;
+        justify-content:center;
+        align-items:center;
+        color:white;
+    }
+    .footer .items {
+        display:flex;
+        flex-direction:row;
+        white-space:nowrap;
+        justify-content:space-evenly;
+        align-items:center;
+        width:500px;
+        height:50px;
+    }
+    .footer .items img{
+        height:35px;
+    }
+    
+
+
+</style>
+
+<div class="example-wrapper">
+    <h1 class="title">CurrencyCalc</h1>
+    <div class="form-container">
+        <div class="form_calc">
+            {{ form_start(calc_form) }}
+                <div class="form_field"> 
+                    <div class="form_row">
+                        <div class="form_label">
+                            {{ form_label(calc_form.Stolica) }} 
+                            {{ form_errors(calc_form.Stolica) }} 
+                        </div>
+                        {{ form_widget(calc_form.Stolica) }} 
+                    </div>
+                </div>
+                <div class="form_field"> 
+                    <div class="form_row">
+                        <div class="form_label">
+                            {{ form_errors(calc_form.Kwota) }} 
+                            {{ form_label(calc_form.Kwota) }}
+                        </div>
+                        {{ form_widget(calc_form.Kwota) }} 
+                    </div>
+                </div>
+                <div class="form_field_rsc"> {{ form_label(calc_form.runscript) }} {{ form_widget(calc_form.runscript) }} </div>
+                <input type='submit' value='Oblicz'/>
+            {{ form_end(calc_form) }}
+        </div>
+        <div class="respond">
+            <div>
+                {{ apiRespond }}
+            </div>
+            <div class="scres">
+                <div>{{ scRespond1 }}</div> 
+                <div style="color:#e84118;">{{ scRespond2 }}</div> 
+                <div style="color:#0097e6">{{ scRespond3 }}</div>
+            </div>
+        </div>
+    </div>
+<div class="footer">
+    <div class="items">
+        Powered by
+        <img src="{{ absolute_url(asset('images/symfony.png')) }}" alt="Symfony">
+        <img src="{{ absolute_url(asset('images/statsmodels.png')) }}" alt="StatsModels">
+    </div>
+</div>
+        
+</div>
+{% endblock %}

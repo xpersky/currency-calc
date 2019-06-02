@@ -1,0 +1,9 @@
+controllers:
+    resource: ../../src/Controller/
+    type: annotation
+homepage:
+    path: /
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /currency/calc
+        permanent: true
